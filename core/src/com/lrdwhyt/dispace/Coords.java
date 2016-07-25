@@ -31,7 +31,7 @@ public class Coords {
   }
 
   /**
-   * Is point due <direction> of this point?
+   * Returns whether a point is due <direction> of this point
    */
   public boolean isDueDirection(Coords point, Direction direction) {
     if (equals(point)) {

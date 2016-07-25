@@ -37,7 +37,6 @@ public class TouchHandler implements GestureListener {
     } else {
       adjY += spaceSize / 2;
     }
-    System.out.println("Travelling to: " + (int) (adjX / spaceSize) + ", " + (int) (adjY / spaceSize));
     int cameraTranslateX = (int) spaceSize * (int) (adjX / spaceSize);
     int cameraTranslateY = (int) spaceSize * (int) (adjY / spaceSize);
     float step = Gdx.graphics.getDeltaTime() * 100 / (cameraTranslateX + cameraTranslateY);

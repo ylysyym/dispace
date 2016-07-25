@@ -41,7 +41,7 @@ public class Map {
   }
 
   /**
-   * Checks if map containsPoint point
+   * Checks if map contains point within its bounds
    */
   public boolean containsPoint(Coords point) {
     if (point.getX() < 0 || point.getY() < 0 || point.getX() >= getWidth() || point.getY() >= getHeight()) {
