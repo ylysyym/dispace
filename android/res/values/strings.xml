@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DiSpacE</string>
+    <string name="menu_new_game">new game</string>
+    <string name="menu_load_game">load game</string>
+    <string name="menu_options">options</string>
+    <string name="menu_about_game">about</string>
+
+</resources>
