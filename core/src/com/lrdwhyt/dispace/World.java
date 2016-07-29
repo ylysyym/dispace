@@ -1,8 +1,7 @@
 package com.lrdwhyt.dispace;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
-import java.util.Random;
+import com.badlogic.gdx.math.MathUtils;
 
 public class World extends Map {
 
@@ -14,10 +13,9 @@ public class World extends Map {
   }
 
   public void generate(int seed) {
-    Random rand = new Random();
     for (int x = 0; x < getWidth(); x++) {
       for (int y = 0; y < getHeight(); y++) {
-        int type = rand.nextInt(spaceSet.getLength());
+        int type = MathUtils.random(1, spaceSet.getLength()) - 1;
         setAt(x, y, type);
       }
     }
@@ -26,10 +24,9 @@ public class World extends Map {
   //TODO: Implement
   public void generateTectonicMap() {
     Map tectonicFramework = new Map(getWidth(), getHeight());
-    Random rand = new Random();
     for (int x = 0; x < getWidth(); x++) {
       for (int y = 0; y < getHeight(); y++) {
-        if (rand.nextInt(10) == 0) {
+        if (MathUtils.random(1, 10) == 1) {
           tectonicFramework.setAt(x, y, 1);
         }
       }
