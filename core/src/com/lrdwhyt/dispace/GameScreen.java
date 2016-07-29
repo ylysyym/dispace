@@ -3,6 +3,7 @@ package com.lrdwhyt.dispace;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
   private TiledMap map;
@@ -26,15 +28,70 @@ public class GameScreen implements Screen {
   private float cameraOffsetX;
   private float cameraOffsetY;
   private GestureDetector touchHandler;
+  private Coords centerPosition;
 
   public GameScreen(Game game) {
     Gdx.graphics.setContinuousRendering(false);
-    camera = new OrthographicCamera();
-    calibrateCamera();
     world = new World(WORLD_WIDTH, WORLD_HEIGHT);
     world.generate(1);
     drawMapFromWorld();
-    touchHandler = new GestureDetector(new TouchHandler(camera, SPACE_SIZE));
+    camera = new OrthographicCamera();
+    calibrateCamera();
+    centerScreenOn(0, 0);
+    touchHandler = new GestureDetector(new GestureDetector.GestureListener() {
+      @Override
+      public boolean touchDown(float x, float y, int pointer, int button) {
+        return false;
+      }
+
+      @Override
+      public boolean tap(float x, float y, int count, int button) {
+        centerScreenOn(getSpaceAtPosition(x, y));
+        return false;
+      }
+
+      public void animateTo(Camera camera, int x, int y, float step) {
+        if (camera.position.x != x && camera.position.y != y) {
+          //camera.translate(new Vector3(x * step, y * step, 0));
+          //animateTo(camera, x, y, step);
+          Gdx.graphics.requestRendering();
+        }
+      }
+
+      @Override
+      public boolean longPress(float x, float y) {
+        return false;
+      }
+
+      @Override
+      public boolean fling(float velocityX, float velocityY, int button) {
+        return false;
+      }
+
+      @Override
+      public boolean pan(float x, float y, float deltaX, float deltaY) {
+        return false;
+      }
+
+      @Override
+      public boolean panStop(float x, float y, int pointer, int button) {
+        return false;
+      }
+
+      @Override
+      public boolean zoom(float initialDistance, float distance) {
+        return false;
+      }
+
+      @Override
+      public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+        return false;
+      }
+
+      @Override
+      public void pinchStop() {
+      }
+    });
   }
 
   @Override
@@ -87,10 +144,8 @@ public class GameScreen implements Screen {
       //Screen is portrait
       camera.setToOrtho(false, MIN_NUMBER_OF_SPACES * SPACE_SIZE, screenHeight / screenWidth * MIN_NUMBER_OF_SPACES * SPACE_SIZE);
     }
-    cameraOffsetX = ((camera.position.x * 2 - SPACE_SIZE) % (2 * SPACE_SIZE)) / 2;
-    cameraOffsetY = ((camera.position.y * 2 - SPACE_SIZE) % (2 * SPACE_SIZE)) / 2;
-    camera.translate(new Vector2(-cameraOffsetX + SPACE_SIZE, -cameraOffsetY + SPACE_SIZE));
-    camera.update();
+    cameraOffsetX = (-((camera.position.x * 2 - SPACE_SIZE) % (2 * SPACE_SIZE)) / 2 + SPACE_SIZE) % (SPACE_SIZE);
+    cameraOffsetY = (-((camera.position.y * 2 - SPACE_SIZE) % (2 * SPACE_SIZE)) / 2 + SPACE_SIZE) % (SPACE_SIZE);
   }
 
   public void drawMapFromWorld() {
@@ -106,6 +161,33 @@ public class GameScreen implements Screen {
     }
     mapLayers.add(baseLayer);
     mapRenderer = new OrthogonalTiledMapRenderer(map);
+  }
+
+  /**
+   * Calculates the coordinates of the space at the position (x, y).
+   * Coordinates are for the world and its maps while positions (x, y) are positions on the screen
+   */
+  public Coords getSpaceAtPosition(float x, float y) {
+    Vector3 tapPosition = camera.unproject(new Vector3(x, y, 0));
+    System.out.println("tap coords: " + tapPosition);
+    int cameraTranslateX = (int) Math.floor(tapPosition.x / SPACE_SIZE);
+    int cameraTranslateY = (int) Math.floor(tapPosition.y / SPACE_SIZE);
+    return new Coords(cameraTranslateX, cameraTranslateY);
+  }
+
+  public void centerScreenOn(int x, int y) {
+    System.out.println(x + ", " + y);
+    float newX = cameraOffsetX + x * SPACE_SIZE;
+    float newY = cameraOffsetY + y * SPACE_SIZE;
+    System.out.println(newX + ", " + newY);
+    centerPosition = new Coords(x, y);
+    camera.position.set(newX, newY, 0);
+    camera.update();
+
+  }
+
+  public void centerScreenOn(Coords position) {
+    centerScreenOn(position.getX(), position.getY());
   }
 
 }
