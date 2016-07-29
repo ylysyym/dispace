@@ -35,8 +35,6 @@ public class GameScreen implements Screen {
     world.generate(1);
     drawMapFromWorld();
     touchHandler = new GestureDetector(new TouchHandler(camera, SPACE_SIZE));
-    Gdx.input.setInputProcessor(touchHandler);
-    Gdx.graphics.requestRendering();
   }
 
   @Override
@@ -50,7 +48,8 @@ public class GameScreen implements Screen {
 
   @Override
   public void show() {
-
+    Gdx.input.setInputProcessor(touchHandler);
+    Gdx.graphics.requestRendering();
   }
 
   @Override
@@ -79,8 +78,8 @@ public class GameScreen implements Screen {
   }
 
   public void calibrateCamera() {
-    int screenWidth = Gdx.graphics.getWidth();
-    int screenHeight = Gdx.graphics.getHeight();
+    float screenWidth = Gdx.app.getGraphics().getWidth();
+    float screenHeight = Gdx.app.getGraphics().getHeight();
     if (screenWidth > screenHeight) {
       //Screen is landscape
       camera.setToOrtho(false, screenWidth / screenHeight * MIN_NUMBER_OF_SPACES * SPACE_SIZE, MIN_NUMBER_OF_SPACES * SPACE_SIZE);
