@@ -3,7 +3,6 @@ package com.lrdwhyt.dispace;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
@@ -25,10 +24,7 @@ public class GameScreen implements Screen {
   private final int WORLD_WIDTH = 100;
   private final int WORLD_HEIGHT = 100;
   private World world;
-  private float cameraOffsetX;
-  private float cameraOffsetY;
   private GestureDetector touchHandler;
-  private Coords centerPosition;
 
   public GameScreen(Game game) {
     Gdx.graphics.setContinuousRendering(false);
@@ -46,16 +42,11 @@ public class GameScreen implements Screen {
 
       @Override
       public boolean tap(float x, float y, int count, int button) {
-        centerScreenOn(getSpaceAtPosition(x, y));
-        return false;
-      }
-
-      public void animateTo(Camera camera, int x, int y, float step) {
-        if (camera.position.x != x && camera.position.y != y) {
-          //camera.translate(new Vector3(x * step, y * step, 0));
-          //animateTo(camera, x, y, step);
-          Gdx.graphics.requestRendering();
+        Coords destinationPoint = getSpaceAtPosition(x, y);
+        if (destinationPoint != null) {
+          centerScreenOn(destinationPoint);
         }
+        return false;
       }
 
       @Override
@@ -144,8 +135,6 @@ public class GameScreen implements Screen {
       //Screen is portrait
       camera.setToOrtho(false, MIN_NUMBER_OF_SPACES * SPACE_SIZE, screenHeight / screenWidth * MIN_NUMBER_OF_SPACES * SPACE_SIZE);
     }
-    cameraOffsetX = (-((camera.position.x * 2 - SPACE_SIZE) % (2 * SPACE_SIZE)) / 2 + SPACE_SIZE) % (SPACE_SIZE);
-    cameraOffsetY = (-((camera.position.y * 2 - SPACE_SIZE) % (2 * SPACE_SIZE)) / 2 + SPACE_SIZE) % (SPACE_SIZE);
   }
 
   public void drawMapFromWorld() {
@@ -168,20 +157,20 @@ public class GameScreen implements Screen {
    * Coordinates are for the world and its maps while positions (x, y) are positions on the screen
    */
   public Coords getSpaceAtPosition(float x, float y) {
-    Vector3 tapPosition = camera.unproject(new Vector3(x, y, 0));
-    System.out.println("tap coords: " + tapPosition);
-    int cameraTranslateX = (int) Math.floor(tapPosition.x / SPACE_SIZE);
-    int cameraTranslateY = (int) Math.floor(tapPosition.y / SPACE_SIZE);
-    return new Coords(cameraTranslateX, cameraTranslateY);
+    Vector3 positionTap = camera.unproject(new Vector3(x, y, 0));
+    int xSpace = (int) Math.floor(positionTap.x / SPACE_SIZE);
+    int ySpace = (int) Math.floor(positionTap.y / SPACE_SIZE);
+    if (world.containsPoint(xSpace, ySpace)) {
+      return new Coords(xSpace, ySpace);
+    } else {
+      return null;
+    }
   }
 
   public void centerScreenOn(int x, int y) {
-    System.out.println(x + ", " + y);
-    float newX = cameraOffsetX + x * SPACE_SIZE;
-    float newY = cameraOffsetY + y * SPACE_SIZE;
-    System.out.println(newX + ", " + newY);
-    centerPosition = new Coords(x, y);
-    camera.position.set(newX, newY, 0);
+    int xCamera = x * SPACE_SIZE + SPACE_SIZE / 2;
+    int yCamera = y * SPACE_SIZE + SPACE_SIZE / 2;
+    camera.position.set(xCamera, yCamera, 0);
     camera.update();
 
   }
