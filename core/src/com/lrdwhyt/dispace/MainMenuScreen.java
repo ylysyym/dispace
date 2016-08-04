@@ -1,12 +1,9 @@
 package com.lrdwhyt.dispace;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -18,24 +15,22 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainMenuScreen implements Screen {
 
-  private Game game;
+  private Dispace game;
   private Stage stage;
   private Table table;
 
-  public MainMenuScreen(Game g) {
+  public MainMenuScreen(Dispace g) {
     this.game = g;
     stage = new Stage(new ScreenViewport());
     table = new Table();
-    BitmapFont robotoThin = new BitmapFont(Gdx.files.internal("roboto-thin.fnt"));
-    robotoThin.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
     TextButton.TextButtonStyle navigationButtonStyle = new TextButton.TextButtonStyle();
-    navigationButtonStyle.font = robotoThin;
+    navigationButtonStyle.font = game.robotoThin;
     navigationButtonStyle.fontColor = new Color(1, 1, 1, 1);
     navigationButtonStyle.downFontColor = new Color(0.6f, 0.6f, 0.6f, 0.6f);
 
     Label.LabelStyle gameTitleStyle = new Label.LabelStyle();
-    gameTitleStyle.font = robotoThin;
+    gameTitleStyle.font = game.robotoThin;
     gameTitleStyle.font.getData().setScale(0.9f);
 
     Label gameTitle = new Label("DiSpacE", gameTitleStyle);

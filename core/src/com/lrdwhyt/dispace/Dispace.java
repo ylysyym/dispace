@@ -2,25 +2,22 @@ package com.lrdwhyt.dispace;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Dispace extends Game {
 
-  private Game game;
   public SpriteBatch spriteBatch;
-  public BitmapFont bitmapFont;
-
-  public Dispace() {
-    game = this;
-  }
+  public BitmapFont robotoThin;
 
   @Override
   public void create() {
     spriteBatch = new SpriteBatch();
-    bitmapFont = new BitmapFont();
+    robotoThin = new BitmapFont(Gdx.files.internal("roboto-thin.fnt"));
+    robotoThin.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     Gdx.graphics.setContinuousRendering(false);
-    this.setScreen(new MainMenuScreen(game));
+    this.setScreen(new MainMenuScreen(this));
   }
 
   @Override
@@ -31,7 +28,7 @@ public class Dispace extends Game {
   @Override
   public void dispose() {
     spriteBatch.dispose();
-    bitmapFont.dispose();
+    robotoThin.dispose();
   }
 
 }

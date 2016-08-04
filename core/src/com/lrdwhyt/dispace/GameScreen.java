@@ -1,6 +1,5 @@
 package com.lrdwhyt.dispace;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -30,9 +29,9 @@ public class GameScreen implements Screen {
   private World world;
   private InputMultiplexer inputHandler;
   private GestureDetector touchHandler;
-  private Game game;
+  private Dispace game;
 
-  public GameScreen(Game g) {
+  public GameScreen(Dispace g) {
     this.game = g;
     world = new World(WORLD_WIDTH, WORLD_HEIGHT);
     world.generate(1);
@@ -92,7 +91,7 @@ public class GameScreen implements Screen {
     });
     InputProcessor backHandler = new InputAdapter() {
       @Override
-      public boolean keyDown(int keyCode) {
+      public boolean keyUp(int keyCode) {
         if (keyCode == Input.Keys.BACK) {
           dispose();
           game.setScreen(new MainMenuScreen(game));
