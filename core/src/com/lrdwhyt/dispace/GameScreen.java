@@ -2,10 +2,8 @@ package com.lrdwhyt.dispace;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
@@ -17,6 +15,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameScreen implements Screen {
   private TiledMap map;
@@ -29,9 +31,23 @@ public class GameScreen implements Screen {
   private World world;
   private GestureDetector touchHandler;
   private Dispace game;
+  private Stage hudStage;
+  private Table hudTable;
+  private Label tooltip;
 
   public GameScreen(Dispace g) {
     this.game = g;
+    hudStage = new Stage(new ScreenViewport());
+    hudTable = new Table();
+    Label.LabelStyle tooltipStyle = new Label.LabelStyle();
+    tooltipStyle.font = game.robotoThin;
+    tooltipStyle.font.getData().setScale(0.3f);
+    tooltipStyle.fontColor = new Color(1, 0.8f, 0.4f, 1);
+    tooltip = new Label("", tooltipStyle);
+    hudTable.center().top();
+    hudTable.add(tooltip);
+    hudTable.setFillParent(true);
+    hudStage.addActor(hudTable);
     world = new World(WORLD_WIDTH, WORLD_HEIGHT);
     world.generate(1);
     drawMapFromWorld();
@@ -91,14 +107,15 @@ public class GameScreen implements Screen {
 
   @Override
   public void render(float delta) {
+    if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+      game.setScreen(new MainMenuScreen(game));
+    }
     Gdx.gl.glClearColor(1, 1, 1, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     camera.update();
     mapRenderer.setView(camera);
     mapRenderer.render();
-    if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-      game.setScreen(new MainMenuScreen(game));
-    }
+    hudStage.draw();
   }
 
   @Override
@@ -179,6 +196,7 @@ public class GameScreen implements Screen {
     int xCamera = x * SPACE_SIZE + SPACE_SIZE / 2;
     int yCamera = y * SPACE_SIZE + SPACE_SIZE / 2;
     camera.position.set(xCamera, yCamera, 0);
+    tooltip.setText("(" + x + ", " + y + ")");
     camera.update();
 
   }
