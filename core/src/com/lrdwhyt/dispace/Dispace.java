@@ -6,14 +6,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Dispace extends Game {
 
+  private Game game;
   public SpriteBatch spriteBatch;
   public BitmapFont bitmapFont;
+
+  public Dispace() {
+    game = this;
+  }
 
   @Override
   public void create() {
     spriteBatch = new SpriteBatch();
     bitmapFont = new BitmapFont();
-    this.setScreen(new GameScreen(this));
+    this.setScreen(new MainMenuScreen(game));
   }
 
   @Override

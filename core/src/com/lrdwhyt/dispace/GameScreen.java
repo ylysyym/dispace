@@ -25,8 +25,10 @@ public class GameScreen implements Screen {
   private final int WORLD_HEIGHT = 100;
   private World world;
   private GestureDetector touchHandler;
+  private Game game;
 
   public GameScreen(Game game) {
+    this.game = game;
     Gdx.graphics.setContinuousRendering(false);
     world = new World(WORLD_WIDTH, WORLD_HEIGHT);
     world.generate(1);
