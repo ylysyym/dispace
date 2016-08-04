@@ -1,6 +1,7 @@
 package com.lrdwhyt.dispace;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -62,6 +63,7 @@ public class MainMenuScreen implements Screen {
 
   @Override
   public void show() {
+    Gdx.input.setCatchBackKey(false);
     Gdx.input.setInputProcessor(stage);
   }
 
