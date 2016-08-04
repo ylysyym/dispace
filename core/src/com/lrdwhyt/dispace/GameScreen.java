@@ -34,7 +34,6 @@ public class GameScreen implements Screen {
 
   public GameScreen(Game g) {
     this.game = g;
-    Gdx.graphics.setContinuousRendering(false);
     world = new World(WORLD_WIDTH, WORLD_HEIGHT);
     world.generate(1);
     drawMapFromWorld();

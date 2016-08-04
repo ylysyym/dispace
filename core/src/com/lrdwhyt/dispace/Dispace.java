@@ -1,6 +1,7 @@
 package com.lrdwhyt.dispace;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -18,6 +19,7 @@ public class Dispace extends Game {
   public void create() {
     spriteBatch = new SpriteBatch();
     bitmapFont = new BitmapFont();
+    Gdx.graphics.setContinuousRendering(false);
     this.setScreen(new MainMenuScreen(game));
   }
 
