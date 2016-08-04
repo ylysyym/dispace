@@ -44,30 +44,30 @@ public class MainMenuScreen implements Screen {
     newGameButton.addListener(new ChangeListener() {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
+        dispose();
         game.setScreen(new GameScreen(game));
       }
     });
     TextButton loadGameButton = new TextButton("load game", navigationButtonStyle);
     TextButton optionsButton = new TextButton("options", navigationButtonStyle);
     TextButton aboutButton = new TextButton("about", navigationButtonStyle);
-    table.add(gameTitle);
-    table.row().row();
-    table.add(newGameButton).padLeft(20).align(Align.left);
+    table.add(gameTitle).padLeft(50).padTop(20);
     table.row();
-    table.add(loadGameButton).padLeft(20).align(Align.left);
+    table.add(newGameButton).padLeft(50).padTop(150).align(Align.left);
     table.row();
-    table.add(optionsButton).padLeft(20).align(Align.left);
+    table.add(loadGameButton).padLeft(50).padTop(50).align(Align.left);
     table.row();
-    table.add(aboutButton).padLeft(20).align(Align.left);
+    table.add(optionsButton).padLeft(50).padTop(50).align(Align.left);
+    table.row();
+    table.add(aboutButton).padLeft(50).padTop(50).align(Align.left);
     table.left().top();
     table.setFillParent(true);
     stage.addActor(table);
-    Gdx.input.setInputProcessor(stage);
   }
 
   @Override
   public void show() {
-
+    Gdx.input.setInputProcessor(stage);
   }
 
   @Override

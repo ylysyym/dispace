@@ -2,6 +2,10 @@ package com.lrdwhyt.dispace;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,11 +28,12 @@ public class GameScreen implements Screen {
   private final int WORLD_WIDTH = 100;
   private final int WORLD_HEIGHT = 100;
   private World world;
+  private InputMultiplexer inputHandler;
   private GestureDetector touchHandler;
   private Game game;
 
-  public GameScreen(Game game) {
-    this.game = game;
+  public GameScreen(Game g) {
+    this.game = g;
     Gdx.graphics.setContinuousRendering(false);
     world = new World(WORLD_WIDTH, WORLD_HEIGHT);
     world.generate(1);
@@ -36,6 +41,7 @@ public class GameScreen implements Screen {
     camera = new OrthographicCamera();
     calibrateCamera();
     centerScreenOn(0, 0);
+    inputHandler = new InputMultiplexer();
     touchHandler = new GestureDetector(new GestureDetector.GestureListener() {
       @Override
       public boolean touchDown(float x, float y, int pointer, int button) {
@@ -85,6 +91,19 @@ public class GameScreen implements Screen {
       public void pinchStop() {
       }
     });
+    InputProcessor backHandler = new InputAdapter() {
+      @Override
+      public boolean keyDown(int keyCode) {
+        if (keyCode == Input.Keys.BACK) {
+          dispose();
+          game.setScreen(new MainMenuScreen(game));
+          return true;
+        }
+        return false;
+      }
+    };
+    inputHandler.addProcessor(touchHandler);
+    inputHandler.addProcessor(backHandler);
   }
 
   @Override
@@ -98,7 +117,8 @@ public class GameScreen implements Screen {
 
   @Override
   public void show() {
-    Gdx.input.setInputProcessor(touchHandler);
+    Gdx.input.setCatchBackKey(true);
+    Gdx.input.setInputProcessor(inputHandler);
     Gdx.graphics.requestRendering();
   }
 
