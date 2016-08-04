@@ -27,7 +27,6 @@ public class GameScreen implements Screen {
   private final int WORLD_WIDTH = 100;
   private final int WORLD_HEIGHT = 100;
   private World world;
-  private InputMultiplexer inputHandler;
   private GestureDetector touchHandler;
   private Dispace game;
 
@@ -39,7 +38,6 @@ public class GameScreen implements Screen {
     camera = new OrthographicCamera();
     calibrateCamera();
     centerScreenOn(0, 0);
-    inputHandler = new InputMultiplexer();
     touchHandler = new GestureDetector(new GestureDetector.GestureListener() {
       @Override
       public boolean touchDown(float x, float y, int pointer, int button) {
@@ -89,19 +87,6 @@ public class GameScreen implements Screen {
       public void pinchStop() {
       }
     });
-    InputProcessor backHandler = new InputAdapter() {
-      @Override
-      public boolean keyUp(int keyCode) {
-        if (keyCode == Input.Keys.BACK) {
-          dispose();
-          game.setScreen(new MainMenuScreen(game));
-          return true;
-        }
-        return false;
-      }
-    };
-    inputHandler.addProcessor(touchHandler);
-    inputHandler.addProcessor(backHandler);
   }
 
   @Override
@@ -111,12 +96,15 @@ public class GameScreen implements Screen {
     camera.update();
     mapRenderer.setView(camera);
     mapRenderer.render();
+    if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+      game.setScreen(new MainMenuScreen(game));
+    }
   }
 
   @Override
   public void show() {
     Gdx.input.setCatchBackKey(true);
-    Gdx.input.setInputProcessor(inputHandler);
+    Gdx.input.setInputProcessor(touchHandler);
     Gdx.graphics.requestRendering();
   }
 
