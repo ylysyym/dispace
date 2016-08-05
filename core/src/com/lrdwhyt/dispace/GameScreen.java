@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameScreen implements Screen {
@@ -33,19 +36,24 @@ public class GameScreen implements Screen {
   private Dispace game;
   private Stage hudStage;
   private Table hudTable;
+  private Table tooltipTable;
   private Label tooltip;
 
   public GameScreen(Dispace g) {
     this.game = g;
     hudStage = new Stage(new ScreenViewport());
     hudTable = new Table();
+    tooltipTable = new Table();
+    tooltipTable.setBackground(new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("pixel.png")))).tint(new Color(0.3f, 0.3f, 0.3f, 0.8f)));
     Label.LabelStyle tooltipStyle = new Label.LabelStyle();
     tooltipStyle.font = game.robotoThin;
-    tooltipStyle.font.getData().setScale(0.3f);
-    tooltipStyle.fontColor = new Color(1, 0.8f, 0.4f, 1);
+    tooltipStyle.font.getData().setScale(0.25f);
+    tooltipStyle.fontColor = new Color(0.8f, 0.5f, 0, 1);
     tooltip = new Label("", tooltipStyle);
+    tooltipTable.center().top();
+    tooltipTable.add(tooltip);
     hudTable.center().top();
-    hudTable.add(tooltip);
+    hudTable.add(tooltipTable).height(120f).width(Gdx.graphics.getWidth());
     hudTable.setFillParent(true);
     hudStage.addActor(hudTable);
     world = new World(WORLD_WIDTH, WORLD_HEIGHT);
@@ -127,7 +135,7 @@ public class GameScreen implements Screen {
 
   @Override
   public void resize(int width, int height) {
-
+    hudStage.getViewport().update(width, height, true);
   }
 
   @Override
