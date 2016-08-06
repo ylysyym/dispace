@@ -1,5 +1,7 @@
 package com.lrdwhyt.dispace;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Map {
 
   private final int width;
@@ -43,8 +45,8 @@ public class Map {
   /**
    * Checks if map contains point within its bounds
    */
-  public boolean containsPoint(Coords point) {
-    if (point.getX() < 0 || point.getY() < 0 || point.getX() >= getWidth() || point.getY() >= getHeight()) {
+  public boolean containsPoint(Vector2 point) {
+    if (point.x < 0 || point.y < 0 || point.x >= getWidth() || point.y >= getHeight()) {
       return false;
     } else {
       return true;
@@ -63,58 +65,13 @@ public class Map {
    * Returns point that is <direction> of (x, y)
    * Returns null if calculated point is not within the map bounds
    */
-  public Coords getPointInDirection(int x, int y, Direction direction) {
-    switch (direction) {
-      case NORTH:
-        if (y > 0) {
-          return new Coords(x, y - 1);
-        } else {
-          return null;
-        }
-      case NORTHEAST:
-        if (y > 0 && x < getWidth()) {
-          return new Coords(x + 1, y - 1);
-        } else {
-          return null;
-        }
-      case EAST:
-        if (x < getWidth()) {
-          return new Coords(x + 1, y);
-        } else {
-          return null;
-        }
-      case SOUTHEAST:
-        if (y < getHeight() && x < getWidth()) {
-          return new Coords(x + 1, y + 1);
-        } else {
-          return null;
-        }
-      case SOUTH:
-        if (y < getHeight()) {
-          return new Coords(x, y + 1);
-        } else {
-          return null;
-        }
-      case SOUTHWEST:
-        if (y < getHeight() && x > 0) {
-          return new Coords(x - 1, y + 1);
-        } else {
-          return null;
-        }
-      case WEST:
-        if (x > 0) {
-          return new Coords(x - 1, y);
-        } else {
-          return null;
-        }
-      case NORTHWEST:
-        if (y > 0 && x > 0) {
-          return new Coords(x - 1, y - 1);
-        } else {
-          return null;
-        }
+  public Vector2 getPointInDirection(Vector2 originalPoint, Direction direction) {
+    originalPoint.add(direction.getVector());
+    if (containsPoint(originalPoint)) {
+      return originalPoint;
+    } else {
+      return null;
     }
-    return null;
   }
 
 }

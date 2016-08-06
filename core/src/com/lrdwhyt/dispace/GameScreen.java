@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
 
       @Override
       public boolean tap(float x, float y, int count, int button) {
-        Coords destinationPoint = getSpaceAtPosition(x, y);
+        Vector2 destinationPoint = getSpaceAtPosition(x, y);
         if (destinationPoint != null) {
           centerScreenOn(destinationPoint);
         }
@@ -189,28 +189,28 @@ public class GameScreen implements Screen {
    * Calculates the coordinates of the space at the position (x, y).
    * Coordinates are for the world and its maps while positions (x, y) are positions on the screen
    */
-  public Coords getSpaceAtPosition(float x, float y) {
+  public Vector2 getSpaceAtPosition(float x, float y) {
     Vector3 positionTap = camera.unproject(new Vector3(x, y, 0));
     int xSpace = (int) Math.floor(positionTap.x / SPACE_SIZE);
     int ySpace = (int) Math.floor(positionTap.y / SPACE_SIZE);
     if (world.containsPoint(xSpace, ySpace)) {
-      return new Coords(xSpace, ySpace);
+      return new Vector2(xSpace, ySpace);
     } else {
       return null;
     }
   }
 
-  public void centerScreenOn(int x, int y) {
-    int xCamera = x * SPACE_SIZE + SPACE_SIZE / 2;
-    int yCamera = y * SPACE_SIZE + SPACE_SIZE / 2;
+  public void centerScreenOn(float x, float y) {
+    float xCamera = x * SPACE_SIZE + SPACE_SIZE / 2;
+    float yCamera = y * SPACE_SIZE + SPACE_SIZE / 2;
     camera.position.set(xCamera, yCamera, 0);
     tooltip.setText("(" + x + ", " + y + ")");
     camera.update();
 
   }
 
-  public void centerScreenOn(Coords position) {
-    centerScreenOn(position.getX(), position.getY());
+  public void centerScreenOn(Vector2 position) {
+    centerScreenOn(position.x, position.y);
   }
 
 }

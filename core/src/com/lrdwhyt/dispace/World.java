@@ -2,14 +2,19 @@ package com.lrdwhyt.dispace;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 
 public class World extends Map {
 
   private SpaceSet spaceSet;
+  private PlayerCharacter player;
+  private Array<NonPlayerCharacter> npcList;
 
   public World(int width, int height) {
     super(width, height);
     spaceSet = new SpaceSet(1);
+    player = new PlayerCharacter();
+    npcList = new Array<NonPlayerCharacter>(50);
   }
 
   public void generate(int seed) {
@@ -43,6 +48,10 @@ public class World extends Map {
 
   public TextureRegion getSpace(int type) {
     return spaceSet.getSpaceType(type);
+  }
+
+  public PlayerCharacter getPlayer() {
+    return player;
   }
 
 }

@@ -1,9 +1,9 @@
 package com.lrdwhyt.dispace;
 
+import com.badlogic.gdx.math.Vector2;
+
 public interface Character {
-
   String getName();
-  Coords getPosition();
-  void setPosition(Coords position);
-
+  Vector2 getPosition();
+  void setPosition(Vector2 position);
 }
