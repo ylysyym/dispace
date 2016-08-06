@@ -7,6 +7,11 @@ public class PlayerCharacter implements Character {
   private String name;
   private Vector2 position;
 
+  public PlayerCharacter() {
+    name = "";
+    position = new Vector2();
+  }
+
   public String getName() {
     return name;
   }
@@ -21,5 +26,10 @@ public class PlayerCharacter implements Character {
 
   public void setPosition(Vector2 position) {
     this.position = position;
+  }
+
+  public void setPosition (float x, float y) {
+    position.x = x;
+    position.y = y;
   }
 }

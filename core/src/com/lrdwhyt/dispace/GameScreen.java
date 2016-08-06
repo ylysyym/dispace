@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
     drawMapFromWorld();
     camera = new OrthographicCamera();
     calibrateCamera();
-    centerScreenOn(0, 0);
+    centerCamera(world.getPlayer().getPosition());
     touchHandler = new GestureDetector(new GestureDetector.GestureListener() {
       @Override
       public boolean touchDown(float x, float y, int pointer, int button) {
@@ -70,9 +70,9 @@ public class GameScreen implements Screen {
 
       @Override
       public boolean tap(float x, float y, int count, int button) {
-        Vector2 destinationPoint = getSpaceAtPosition(x, y);
-        if (destinationPoint != null) {
-          centerScreenOn(destinationPoint);
+        Vector2 destination = getSpaceAtPosition(x, y);
+        if (destination != null) {
+          playerMoveTo(destination);
         }
         return false;
       }
@@ -200,17 +200,26 @@ public class GameScreen implements Screen {
     }
   }
 
-  public void centerScreenOn(float x, float y) {
+  public void centerCamera(float x, float y) {
     float xCamera = x * SPACE_SIZE + SPACE_SIZE / 2;
     float yCamera = y * SPACE_SIZE + SPACE_SIZE / 2;
     camera.position.set(xCamera, yCamera, 0);
-    tooltip.setText("(" + x + ", " + y + ")");
     camera.update();
 
   }
 
-  public void centerScreenOn(Vector2 position) {
-    centerScreenOn(position.x, position.y);
+  public void centerCamera(Vector2 position) {
+    centerCamera(position.x, position.y);
+  }
+
+  public void playerMoveTo(Vector2 destination) {
+    world.getPlayer().setPosition(destination);
+    updateTooltip();
+    centerCamera(destination);
+  }
+
+  public void updateTooltip() {
+    tooltip.setText("Current position: (" + world.getPlayer().getPosition().x + ", " + world.getPlayer().getPosition().y + ")");
   }
 
 }

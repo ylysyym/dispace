@@ -14,6 +14,7 @@ public class World extends Map {
     super(width, height);
     spaceSet = new SpaceSet(1);
     player = new PlayerCharacter();
+    player.setPosition(MathUtils.random(0, getWidth()), MathUtils.random(0, getHeight()));
     npcList = new Array<NonPlayerCharacter>(50);
   }
 

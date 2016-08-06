@@ -65,10 +65,10 @@ public class Map {
    * Returns point that is <direction> of (x, y)
    * Returns null if calculated point is not within the map bounds
    */
-  public Vector2 getPointInDirection(Vector2 originalPoint, Direction direction) {
-    originalPoint.add(direction.getVector());
-    if (containsPoint(originalPoint)) {
-      return originalPoint;
+  public Vector2 getPointInDirection(Vector2 point, Direction direction) {
+    point.add(direction.getVector());
+    if (containsPoint(point)) {
+      return point;
     } else {
       return null;
     }

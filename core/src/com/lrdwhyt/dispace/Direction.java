@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
  * Used in movement animations
  */
 public enum Direction {
-  NORTH(0, 1f), NORTHEAST(1f, 1f), EAST(1f, 0), SOUTHEAST(1f, -1f), SOUTH(0, -1f), SOUTHWEST(-1f, 1f), WEST(-1f, 0), NORTHWEST(-1f, 1f);
+  NORTH(0, 1), NORTHEAST(1, 1), EAST(1f, 0), SOUTHEAST(1, -1), SOUTH(0, -1), SOUTHWEST(-1, 1), WEST(-1, 0), NORTHWEST(-1, 1);
 
   Vector2 vector;
 
