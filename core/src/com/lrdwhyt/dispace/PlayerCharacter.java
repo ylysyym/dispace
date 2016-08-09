@@ -6,6 +6,8 @@ public class PlayerCharacter implements Character {
 
   private String name;
   private Vector2 position;
+  private int[] skills;
+  private int[] inventory = new int[Item.values().length];
 
   public PlayerCharacter() {
     name = "";
