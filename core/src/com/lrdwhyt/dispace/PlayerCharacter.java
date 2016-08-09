@@ -6,7 +6,7 @@ public class PlayerCharacter implements Character {
 
   private String name;
   private Vector2 position;
-  private int[] skills;
+  private int[] skills = new ;
   private int[] inventory = new int[Item.values().length];
 
   public PlayerCharacter() {
@@ -30,8 +30,9 @@ public class PlayerCharacter implements Character {
     this.position = position;
   }
 
-  public void setPosition (float x, float y) {
+  public void setPosition(float x, float y) {
     position.x = x;
     position.y = y;
   }
+
 }
